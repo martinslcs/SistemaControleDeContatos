@@ -13,3 +13,4 @@ namespace SistemaControleDeContatos.Data
         public DbSet<ContatoModel> Contato { get; set; }
     }
 }
+    

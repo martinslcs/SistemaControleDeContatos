@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using SistemaControleDeContatos.Data;
+using SistemaControleDeContatos.Repositorio;
+
 namespace SistemaControleDeContatos
 {
     public class Program
@@ -6,16 +10,20 @@ namespace SistemaControleDeContatos
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Adicionar serviços
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddEntityFrameworkSqlServer()
+                .AddDbContext<BancoContext>(o =>
+                    o.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
+            builder.Services.AddScoped<IContatoRepositorio, ContatoRepositorio>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configurar pipeline de requisição HTTP
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
