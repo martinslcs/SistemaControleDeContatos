@@ -16,8 +16,8 @@ namespace SistemaControleDeContatos.Controllers
         public IActionResult Index()
         {
 
-           List<ContatoModel> contatos = _contatoRepositorio.BuscarTodos();
-            return View(contatos);
+           List<ContatoModel> contato = _contatoRepositorio.BuscarTodos();
+            return View(contato);
         }
 
         public IActionResult Criar()
@@ -25,15 +25,22 @@ namespace SistemaControleDeContatos.Controllers
             return View();
         }
 
-        public IActionResult Editar(int id)
+        public IActionResult Editar(int Id)
         {
-            ContatoModel contato = _contatoRepositorio.ListarPorId(id);
+            ContatoModel contato = _contatoRepositorio.ListarPorId(Id);
             return View(contato);
         }
 
-        public IActionResult ApagarConfirmacao()
+        public IActionResult ApagarConfirmacao(int Id)
         {
-            return View();
+            ContatoModel contato = _contatoRepositorio.ListarPorId(Id);
+            return View(contato);
+        }
+
+        public IActionResult Apagar(int Id)
+        {
+            _contatoRepositorio.Apagar(Id);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -44,7 +51,7 @@ namespace SistemaControleDeContatos.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualizar(ContatoModel contato)
+        public IActionResult Alterar(ContatoModel contato)
         {
             _contatoRepositorio.Atualizar(contato);
             return RedirectToAction("Index");

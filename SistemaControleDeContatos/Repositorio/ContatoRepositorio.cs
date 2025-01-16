@@ -11,9 +11,9 @@ namespace SistemaControleDeContatos.Repositorio
             this._context = bancoContext;
         }
 
-        public ContatoModel ListarPorId(int id)
+        public ContatoModel ListarPorId(int Id)
         {
-            return _context.Contato.FirstOrDefault(x => x.id == id);
+            return _context.Contato.FirstOrDefault(x => x.Id == Id);
         }
 
         public List<ContatoModel> BuscarTodos()
@@ -30,10 +30,10 @@ namespace SistemaControleDeContatos.Repositorio
         }
 
         public ContatoModel Atualizar(ContatoModel contato)
-        {
-            ContatoModel contatoDB = ListarPorId(contato.id);
+        {   
+            ContatoModel contatoDB = ListarPorId(contato.Id);
 
-            if (contatoDB == null) throw new System.Exception("Contato não encontrado para atualização");
+            if(contatoDB == null) throw new System.Exception("Contato não encontrado para atualização");
 
             contatoDB.Nome = contato.Nome;
             contatoDB.Email = contato.Email;
@@ -45,6 +45,16 @@ namespace SistemaControleDeContatos.Repositorio
             return contatoDB;
         }
 
+        public bool Apagar(int Id)
+        {
+            ContatoModel contatoDB = ListarPorId(Id);
 
+            if (contatoDB == null) throw new System.Exception("Houve um erro na deleção do contato");
+
+            _context.Contato.Remove(contatoDB);
+            _context.SaveChanges();
+
+            return true;
+        }
     }
 }
